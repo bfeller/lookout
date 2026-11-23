@@ -1,0 +1,32 @@
+{
+  "package_name": "lookout",
+  "version": "0.1.0",
+  "app_name": "Lookout",
+  "bin_name": "lookout",
+  "description": "Watch and listen through the Cardputer Zero's camera from your phone",
+  "store": {
+    "summary": "See and hear through the camera from your phone: scan the QR, no app.",
+    "description": "Turn the Cardputer Zero into a portable security camera or an inspection camera for hard-to-see places. Open Lookout, scan the QR code with your phone, and your phone's browser shows the live camera - no app, no account, nothing leaves your Wi-Fi network.\n\n- Live video in any phone or computer browser (480p, 720p or 1080p)\n- Listen through the microphone with adjustable boost (+12/+24/+36 dB); the mic only runs while someone is listening\n- Snapshots, rotate and full-screen on the phone; change quality from the phone\n- Live preview on the Cardputer for aiming, plus a full-screen view\n- Sleep mode turns the screen off; the camera only runs while someone is watching\n- The Cardputer always shows when someone is watching or listening\n- Private link: the QR code carries a secret key, and N makes a new one (and disconnects everyone)\n\nKeys: Enter big QR, V full-screen view, Q quality, M mic on/off, G mic boost, R rotate 180, S sleep, N new link, hold Esc to exit.",
+    "categories": ["Media", "System Tools"],
+    "screenshots": [
+      "store/screenshots/1-main.png",
+      "store/screenshots/2-qr.png",
+      "store/screenshots/3-fullview.png",
+      "store/screenshots/4-phone.png"
+    ],
+    "icon": "assets/images/lookout_256.png",
+    "license": "MIT",
+    "source_repo": "https://github.com/bfeller/lookout",
+    "author": { "github": "bfeller", "display_name": "Bryan Feller" },
+    "share_code": "LOOK",
+    "permissions": {
+      "camera": true,
+      "microphone": true,
+      "imu": false,
+      "network": true,
+      "additional_hardware": false,
+      "background_service": false,
+      "external_display": false
+    }
+  }
+}

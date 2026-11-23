@@ -1,0 +1,44 @@
+/* LVGL configuration for Lookout (LVGL 9.5). Unlisted options use LVGL defaults. */
+#ifndef LV_CONF_H
+#define LV_CONF_H
+
+#define LV_COLOR_DEPTH 16
+
+#define LV_USE_STDLIB_MALLOC LV_STDLIB_CLIB
+#define LV_USE_STDLIB_STRING LV_STDLIB_CLIB
+#define LV_USE_STDLIB_SPRINTF LV_STDLIB_CLIB
+
+#define LV_DEF_REFR_PERIOD 33
+#define LV_DPI_DEF 130
+
+#define LV_USE_LOG 0
+#define LV_USE_ASSERT_NULL 1
+#define LV_USE_ASSERT_MALLOC 1
+
+#define LV_FONT_MONTSERRAT_10 1
+#define LV_FONT_MONTSERRAT_12 1
+#define LV_FONT_MONTSERRAT_14 1
+#define LV_FONT_MONTSERRAT_16 1
+#define LV_FONT_MONTSERRAT_20 1
+#define LV_FONT_MONTSERRAT_24 1
+#define LV_FONT_DEFAULT &lv_font_montserrat_12
+
+#define LV_USE_THEME_DEFAULT 1
+#define LV_THEME_DEFAULT_DARK 1
+
+#if defined(BH_DESKTOP)
+#define LV_USE_LINUX_FBDEV 0
+#else
+#define LV_USE_LINUX_FBDEV 1
+#define LV_LINUX_FBDEV_BSD 0
+#define LV_LINUX_FBDEV_RENDER_MODE LV_DISPLAY_RENDER_MODE_PARTIAL
+#define LV_LINUX_FBDEV_BUFFER_COUNT 1
+#define LV_LINUX_FBDEV_BUFFER_SIZE 60
+#endif
+
+#define LV_USE_QRCODE 1
+
+#define LV_BUILD_EXAMPLES 0
+#define LV_BUILD_DEMOS 0
+
+#endif /* LV_CONF_H */

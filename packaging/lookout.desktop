@@ -1,0 +1,6 @@
+[Desktop Entry]
+Name=Lookout
+Exec=/usr/share/APPLaunch/bin/lookout
+Terminal=false
+Icon=share/images/lookout.png
+Type=Application
