@@ -4,7 +4,9 @@ Portal: <https://dev.cardputer.cc/#/upload>
 
 ## Package
 
-- Debian package path: `build/pkg/lookout_0.1.0_arm64.deb` (built with `make package`)
+- Debian package: GitHub Release v0.1.0 asset `lookout_0.1.0_arm64.deb`
+  (https://github.com/bfeller/lookout/releases/tag/v0.1.0), SHA-256
+  `c335242ce4188e52e90e38bcb0f01bd6f1f98799aa75a8136d5d06a087909375`
 - Package: `lookout`
 - Version: `0.1.0`
 - Architecture: `arm64`
