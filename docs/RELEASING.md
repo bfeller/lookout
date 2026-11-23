@@ -33,7 +33,9 @@ Then publish to the store:
 1. Wait for the **build** workflow on the tag to go green; open the new release on GitHub and
    download `lookout_0.1.1_arm64.deb`.
 2. Upload it at <https://dev.cardputer.cc/#/upload> (signed in as `bfeller`), source repository
-   `https://github.com/bfeller/lookout`, keep "hide email" on.
+   `https://github.com/bfeller/lookout`, keep "hide email" on. **Check the source field before
+   submitting:** the portal can pre-fill the repo from your last upload of a different app (v0.1.0
+   was recorded with bfeller/beamhound by mistake).
 3. The portal opens a PR on `CardputerZero/packages`. The **first** release of a new app needs a
    short video of it running on a real device, posted as a comment on that PR; a maintainer then
    merges it. Later updates merge automatically once the store's checks pass.
