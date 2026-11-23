@@ -47,18 +47,23 @@ Portal: <https://dev.cardputer.cc/#/upload>
 - [x] Control fields contain Package, Version, Architecture, and Maintainer.
 - [x] Architecture is appropriate for the package (`arm64` for native binaries).
 - [x] APPLaunch `.desktop`, executable, and PNG icon exist inside the package.
-- [ ] Package name ownership and update version are valid (checked by the portal at upload).
+- [x] Package name ownership and update version are valid (portal accepted the upload).
 - [x] Listing copy and categories have been reviewed.
 - [x] Four clean 320 x 170 baseline screenshots exist.
 - [x] No credentials, tokens, or private server details are embedded.
 - [x] `prepublish_check.py` passed (2026-11-22).
 - [x] Tested on a Cardputer Zero (720p ~12.5 fps, audio, auth, 3-minute soak).
-- [ ] The user explicitly approved external submission.
+- [x] The user explicitly approved external submission (submitted by the user via the portal).
 
 ## Submission Result
 
-- Status: `not submitted`
-- Submitted at: TODO
-- Portal message: TODO
-- Actions URL: TODO
-- Tracking or pull-request URL: TODO
+- Status: `submitted, awaiting maintainer review` (first release requires a demo video in the PR)
+- Submitted at: 2026-11-23T03:01:55Z
+- Portal message: All automated checks passed. First release of a new app: post a short video of the app
+  running on a real device in the PR; a maintainer reviews and merges.
+- Package SHA-256: `c335242ce4188e52e90e38bcb0f01bd6f1f98799aa75a8136d5d06a087909375` (matches the v0.1.0 release)
+- Actions URL: https://github.com/CardputerZero/packages/actions/runs/45103514952
+- Tracking or pull-request URL: https://github.com/CardputerZero/packages/pull/689
+- Known issue: the portal recorded `source_repo` as https://github.com/bfeller/beamhound and the author
+  display name as `bfeller`. Correct values: https://github.com/bfeller/lookout, "Bryan Feller".
+  Ask the maintainer to fix meta.json in the PR; on future uploads, check the source field before submitting.
