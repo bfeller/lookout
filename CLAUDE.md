@@ -17,5 +17,8 @@ Sibling project of ~/projects/beamhound (same build setup and conventions).
 - Waits in media sources must use real time even while the source is stopped (an early-return
   bug once made streams exit instantly before the camera/mic started).
 - QR: light colour #C8C8C8 (pure white overexposes phone cameras) with quiet zone enabled.
+- Releases: `docs/RELEASING.md` (tag vX.Y.Z -> CI builds the .deb into a GitHub Release; store
+  upload is manual). CI fails on compiler warnings in `src/` and on glibc symbols newer than 2.36.
+- Store screenshots must use a throwaway token (the QR code encodes the access link).
 - Version lives in app-builder.json only (`tools/bump_version.sh`). Commit as
   `Bryan Feller <6282600+bfeller@users.noreply.github.com>`.

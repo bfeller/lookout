@@ -1,0 +1,100 @@
+# Build on every push/PR; on a version tag (vX.Y.Z) also publish the Application Store .deb
+# as a GitHub Release. Publishing to the store itself stays manual (see docs/RELEASING.md).
+name: build
+
+on:
+  push:
+    branches: [master]
+    tags: ["v*"]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  LVGL_VERSION: v9.5.0
+  # CardputerZero/skill: provides the store's prepublish_check.py.
+  STORE_SKILL_COMMIT: 2a061c0908c40676837d7d40e40b23ac43a2f888
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: astral-sh/setup-uv@v5
+
+      - name: Cache LVGL
+        uses: actions/cache@v4
+        with:
+          path: deps/lvgl
+          key: lvgl-${{ env.LVGL_VERSION }}
+
+      - name: Fetch LVGL
+        run: '[ -d deps/lvgl ] || git clone -q --depth 1 --branch "$LVGL_VERSION" https://github.com/lvgl/lvgl.git deps/lvgl'
+
+      - name: Check versions agree
+        run: |
+          version=$(make -s version)
+          echo "app-builder.json version: $version"
+          if [ "${GITHUB_REF_TYPE}" = "tag" ] && [ "${GITHUB_REF_NAME}" != "v$version" ]; then
+            echo "::error::Tag ${GITHUB_REF_NAME} does not match app-builder.json version $version (run tools/bump_version.sh)"
+            exit 1
+          fi
+
+      - name: Native compile check (warnings in our code fail the build)
+        run: |
+          make -j"$(nproc)" native 2>&1 | tee native.log
+          if grep -E "^src/.*warning:" native.log; then echo "::error::compiler warnings in src/"; exit 1; fi
+
+      - name: Cross-compile and package
+        run: make -j"$(nproc)" package
+
+      - name: Check the binary runs on the Cardputer's glibc
+        run: |
+          max=$(readelf -V build/cross/lookout | grep -oE 'GLIBC_[0-9.]+' | sort -uV | tail -1)
+          echo "highest glibc symbol: $max"
+          [ "$(printf '%s\nGLIBC_2.36\n' "$max" | sort -V | tail -1)" = "GLIBC_2.36" ] \
+            || { echo "::error::binary needs $max (Cardputer Zero ships 2.41; target is <= 2.36)"; exit 1; }
+
+      - name: Store prepublish check
+        run: |
+          curl -fsSL -o prepublish_check.py \
+            "https://raw.githubusercontent.com/CardputerZero/skill/$STORE_SKILL_COMMIT/cardputer-app-publish/scripts/prepublish_check.py"
+          python3 prepublish_check.py --deb build/pkg/lookout_$(make -s version)_arm64.deb --app-dir .
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: lookout-deb
+          path: build/pkg/*.deb
+          if-no-files-found: error
+
+  release:
+    if: github.ref_type == 'tag'
+    needs: build
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: lookout-deb
+
+      - name: Create GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          deb=$(ls *.deb)
+          sha=$(sha256sum "$deb" | cut -d' ' -f1)
+          cat > notes.md <<EOF
+          Store package: \`$deb\`
+          SHA-256: \`$sha\`
+
+          To publish: download the .deb below and upload it at https://dev.cardputer.cc/#/upload
+          (source repository: https://github.com/${GITHUB_REPOSITORY}). Updates to an already
+          published app merge automatically once the store's checks pass.
+          EOF
+          gh release create "$GITHUB_REF_NAME" "$deb" --title "Lookout $GITHUB_REF_NAME" \
+            --notes-file notes.md --verify-tag

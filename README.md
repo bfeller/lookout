@@ -45,6 +45,17 @@ make deploy    # install on a Cardputer over ssh (DEVICE=cardputer)
 Don't build on the Cardputer itself (352 MB RAM). `LOOKOUT_VIEW=qr|full` opens a view
 directly, for screenshots.
 
+## Releasing
+
+Tag a version and CI builds the store package and attaches it to a GitHub Release:
+
+```sh
+tools/bump_version.sh 0.1.1
+git commit -am "Release v0.1.1" && git tag v0.1.1 && git push && git push origin v0.1.1
+```
+
+Then upload the `.deb` from the release to the store portal. Full steps: [docs/RELEASING.md](docs/RELEASING.md).
+
 ## Security notes
 
 Video and audio travel unencrypted (HTTP) over your local network, protected by the secret key in
