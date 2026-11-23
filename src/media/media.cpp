@@ -36,7 +36,9 @@ bool VideoSource::start(const VideoConfig& cfg)
                                      "--quality", std::to_string(cfg.quality),
                                      "--width", std::to_string(cfg.width), "--height", std::to_string(cfg.height),
                                      "--framerate", std::to_string(cfg.fps), "--flush", "-o", "-"};
-    if (cfg.rotate180) {
+    // The Cardputer Zero's camera module is mounted upside down, so "upright" needs a 180
+    // degree sensor rotation; the user's rotate setting flips relative to upright.
+    if (!cfg.rotate180) {
         args.push_back("--rotation");
         args.push_back("180");
     }
